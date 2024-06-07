@@ -6,16 +6,23 @@ export class GameManager {
 
     private games :Game[];
     private pendingUser: WebSocket | null;
+    private users: WebSocket[];
 
     constructor(){
         this.games = [];
         this.pendingUser = null;
+        this.users = [];
     }
 
     addUser(socket: WebSocket){
+        this.users.push(socket);
+        this.handleMessage(socket);
     }
 
     removeUser(socket: WebSocket){
+        this.users = this.users.filter(user=> user!==socket);
+
+        //stop the game maybe?
     }
 
     private handleMessage(socket: WebSocket){

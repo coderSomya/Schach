@@ -17,7 +17,7 @@ wss.on('connection', function connection(ws){
         console.log("recieved: %s",data);
     });
 
-    ws.send('');
+    ws.send('connected');
 });
 
 
