@@ -18,7 +18,16 @@ const Game: React.FC= () => {
         (JSON.stringify({
             type: INIT_GAME
         }))
-    }
+    };
+
+    const handleExit = ()=>{
+        socket?.send(JSON.stringify({
+            type: GAME_OVER
+        }))
+        setStarted(false);
+        setChess(new Chess());
+        setBoard(chess.board());
+    };
 
     useEffect(()=>{
         if(!socket) return;
@@ -54,7 +63,9 @@ const Game: React.FC= () => {
         </div>
         <div className="w-[20%] flex justify-center items-center bg-gray-900">{
             started ? 
-            <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold rounded-lg">
+            <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold rounded-lg"
+            onClick={handleExit}
+            >
             End
         </button> : 
                     <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold border  text-center rounded-lg" onClick={handlePlay}>

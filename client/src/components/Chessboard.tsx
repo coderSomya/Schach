@@ -3,6 +3,7 @@ import {Square, PieceSymbol, Color} from "chess.js";
 import { useSocket } from '../hooks/useSocket';
 import { getAsciiFromCoords } from '../utils/ascii';
 
+
 interface boardProps
 {
     square: Square;
@@ -21,7 +22,7 @@ socket: WebSocket;
   const handleMove = (square: Square | undefined)=>{
     if(!socket) return;
     console.log("clickec", square);
-    if(!from){
+    if(from===undefined){
       setFrom(square);
       console.log("set from to", from);
       return;
@@ -58,7 +59,14 @@ socket: WebSocket;
                 {
                   row.map((square, j)=>{
                     const rep = getAsciiFromCoords(i,j) as Square;
-                    return <div key={j} className={`w-[50px] h-[50px] border text-center font-bold hover: cursor-pointer shadow-lg border-rounded ${(i+j)%2 ? 'bg-green-500': 'bg-green-300'}`} onClick={()=>handleMove(rep)}>{square ? square.type : ""}</div>
+                    return <div key={j} className={`w-[50px] h-[50px] border text-center font-bold hover: cursor-pointer shadow-lg border-rounded ${(i+j)%2 ? 'bg-green-500': 'bg-green-300'}`} onClick={()=>handleMove(rep)}>
+              {square ? (
+        <img
+          className="w-14"
+          src={`/${square?.color === 'b' ? `b${square.type}` : `w${square.type}`}.png`}
+        />
+      ) : null}
+                    </div>
                   })
                 }
             </div>)

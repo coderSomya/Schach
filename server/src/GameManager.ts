@@ -1,5 +1,5 @@
 import { WebSocket } from "ws";
-import { INIT_GAME, MOVE } from "./messages";
+import { GAME_OVER, INIT_GAME, MOVE } from "./messages";
 import { Game } from "./Game";
 
 export class GameManager {
@@ -46,6 +46,10 @@ export class GameManager {
                     const game = this.games.find((game) => game.player1 === socket || game.player2 === socket);
 
                     if(game) game.makemove(socket, message.payload.move)
+                    break;
+
+                case GAME_OVER:
+                    this.games = this.games.filter((game) => game.player1 !== socket && game.player2 !== socket);
                     break;
             }
         })
