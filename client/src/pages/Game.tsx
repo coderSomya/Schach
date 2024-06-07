@@ -12,7 +12,10 @@ const Game: React.FC= () => {
     const [board, setBoard] = useState(chess.board());
 
     const handlePlay = ()=>{
-        socket.emit(JSON.stringify({
+        if(!socket) return;
+
+        socket.send
+        (JSON.stringify({
             type: INIT_GAME
         }))
     }
@@ -25,8 +28,8 @@ const Game: React.FC= () => {
 
             switch(message.type){
                 case INIT_GAME:
-                    setChess(new Chess());
                     setBoard(chess.board());
+                    setStarted(true);
                     break;
                 case MOVE:
                     const move = message.payload;
@@ -44,15 +47,17 @@ const Game: React.FC= () => {
     if(!socket) return <div>Connecting....</div>
   return (
     <div className="w-full h-screen flex mx-[5%]">
-        <div className="w-[70%] bg-gray-900">
-            <Chessboard board={board}/>
+        <div className="w-[70%] flex items-center bg-gray-900">
+            <Chessboard board={board} setBoard={setBoard} chess={chess}
+            socket={socket}
+            />
         </div>
         <div className="w-[20%] flex justify-center items-center bg-gray-900">{
             started ? 
-            <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold ">
+            <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold rounded-lg">
             End
         </button> : 
-                    <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold " onClick={handlePlay}>
+                    <button className="w-20 h-20 p-5 bg-green-500 text-white text-2xl font-bold border  text-center rounded-lg" onClick={handlePlay}>
                     Play
                 </button>
             }

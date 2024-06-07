@@ -45,7 +45,7 @@ export class GameManager {
                 case MOVE:
                     const game = this.games.find((game) => game.player1 === socket || game.player2 === socket);
 
-                    if(game) game.makemove(socket, message.move)
+                    if(game) game.makemove(socket, message.payload.move)
                     break;
             }
         })
